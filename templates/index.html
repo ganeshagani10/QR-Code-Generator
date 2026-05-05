@@ -1,95 +1,196 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>UPI QR Generator</title>
+<meta charset="UTF-8">
+<title>QuickPay - UPI QR Generator</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            color: white;
-        }
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        .container {
-            background: white;
-            color: black;
-            padding: 30px;
-            border-radius: 15px;
-            width: 350px;
-            text-align: center;
-            box-shadow: 0px 10px 25px rgba(0,0,0,0.2);
-        }
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
 
-        h2 {
-            margin-bottom: 20px;
-        }
+body {
+    background: #0f172a;
+    color: white;
+}
 
-        input {
-            width: 90%;
-            padding: 10px;
-            margin: 8px 0;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-        }
+/* Layout */
+.wrapper {
+    display: flex;
+    min-height: 100vh;
+}
 
-        button {
-            padding: 10px 20px;
-            background: #2a5298;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
+/* LEFT SIDE */
+.left {
+    flex: 1;
+    padding: 60px;
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+}
 
-        button:hover {
-            background: #1e3c72;
-        }
+.brand {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
 
-        img {
-            margin-top: 15px;
-        }
+.tagline {
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 20px;
+}
 
-        .download-btn {
-            margin-top: 10px;
-            display: inline-block;
-        }
-    </style>
+.subtext {
+    opacity: 0.7;
+    margin-bottom: 30px;
+}
+
+.features {
+    margin-top: 30px;
+}
+
+.feature {
+    margin-bottom: 15px;
+    opacity: 0.9;
+}
+
+/* RIGHT SIDE */
+.right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* CARD */
+.card {
+    background: #1e293b;
+    padding: 30px;
+    border-radius: 20px;
+    width: 350px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.card h2 {
+    margin-bottom: 15px;
+}
+
+/* INPUT */
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 10px;
+    border: none;
+    background: #334155;
+    color: white;
+}
+
+/* BUTTON */
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #6366f1, #3b82f6);
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+/* QR */
+.qr-box {
+    text-align: center;
+    margin-top: 20px;
+}
+
+img {
+    width: 200px;
+    margin-top: 10px;
+}
+
+/* DOWNLOAD */
+.download-btn button {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+}
+
+/* MOBILE */
+@media (max-width: 900px) {
+    .wrapper {
+        flex-direction: column;
+    }
+
+    .left {
+        padding: 30px;
+        text-align: center;
+    }
+}
+</style>
 </head>
 
 <body>
 
-<div class="container">
-    <h2>💳 UPI QR Generator</h2>
+<div class="wrapper">
 
-    <form method="POST">
-        <input type="text" name="upi_id" placeholder="Enter UPI ID" value="{{ upi_id }}" required>
+    <!-- LEFT -->
+    <div class="left">
+        <div class="brand">🚀 QuickPay</div>
 
-        <input type="text" name="name" placeholder="Enter Name" value="{{ name }}" required>
+        <div class="tagline">
+            Create UPI QR Codes<br>
+            in Seconds.
+        </div>
 
-        <input type="text" name="amount" placeholder="Enter Amount (optional)" value="{{ amount }}">
+        <div class="subtext">
+            Simple, fast and secure QR generator for instant payments.
+        </div>
 
-        <input type="text" name="note" placeholder="Enter Note (optional)" value="{{ note }}">
+        <div class="features">
+            <div class="feature">✅ Instant QR generation</div>
+            <div class="feature">✅ Custom amount & notes</div>
+            <div class="feature">✅ Download & share easily</div>
+            <div class="feature">✅ Works with all UPI apps</div>
+        </div>
+    </div>
 
-        <br><br>
-        <button type="submit">Generate QR</button>
-    </form>
+    <!-- RIGHT -->
+    <div class="right">
+        <div class="card">
+            <h2>Generate QR</h2>
 
-    {% if qr_generated %}
-        <h3>Your QR Code:</h3>
+            <form method="POST">
+                <input type="text" name="upi_id" placeholder="UPI ID" value="{{ upi_id }}" required>
+                <input type="text" name="name" placeholder="Name" value="{{ name }}" required>
+                <input type="text" name="amount" placeholder="Amount (optional)" value="{{ amount }}">
+                <input type="text" name="note" placeholder="Note (optional)" value="{{ note }}">
 
-        <img src="{{ url_for('static', filename='qr.png') }}" width="200">
+                <button type="submit">Generate QR</button>
+            </form>
 
-        <br>
+            {% if qr_generated %}
+            <div class="qr-box">
+                <img src="{{ url_for('static', filename='qr.png') }}?{{ range(1,1000)|random }}">
 
-        <a href="{{ url_for('static', filename='qr.png') }}" download class="download-btn">
-            <button>Download QR</button>
-        </a>
-    {% endif %}
+                <div class="download-btn">
+                    <a href="{{ url_for('static', filename='qr.png') }}" download>
+                        <button>Download QR</button>
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
 </div>
 
 </body>
